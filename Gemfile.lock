@@ -1,0 +1,23 @@
+PATH
+  remote: .
+  specs:
+    nuts-docs (0.1.0)
+      nokogiri (~> 1.10.9)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    mini_portile2 (2.4.0)
+    nokogiri (1.10.9)
+      mini_portile2 (~> 2.4.0)
+    rake (12.3.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  nuts-docs!
+  rake (~> 12.0)
+
+BUNDLED WITH
+   2.1.4
