@@ -1,8 +1,6 @@
-require 'nokogiri'
-
 module Nuts
   module Docs
-    module XmlToMd
+    module Doxygen
       class CompoundBase
         def initialize(elem)
           @elem = elem

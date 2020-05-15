@@ -1,6 +1,6 @@
 module Nuts
   module Docs
-    module XmlToMd
+    module Doxygen
       class Location < CompoundBase
         key :file, :attribute
         key :line, :attribute
