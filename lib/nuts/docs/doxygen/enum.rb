@@ -2,6 +2,8 @@ module Nuts
   module Docs
     module Doxygen
       class Enum < CompoundBase
+        include Typedef
+
         key :id, :attribute
         key :type, :text
         key :name, :text

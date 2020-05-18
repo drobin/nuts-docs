@@ -8,6 +8,14 @@ module Nuts
         @header = header
       end
 
+      def typedefs
+        @typedefs || []
+      end
+
+      def typedefs=(list)
+        @typedefs = list
+      end
+
       def select(type)
         send("select_#{type}")
       end
@@ -18,7 +26,8 @@ module Nuts
         if @doc.nil?
           compound = index_doc.xpath("/doxygenindex/compound[@kind='file'][name='#{@header}']").first
           path = File.join(@build_path, "#{compound['refid']}.xml")
-          @doc ||= File.open(path) { |f| Nokogiri::XML(f) }
+          @doc = File.open(path) { |f| Nokogiri::XML(f) }
+          inject_typedefs(@doc)
         end
 
         return @doc
@@ -49,8 +58,15 @@ module Nuts
         doc.xpath("/doxygen/compounddef/innerclass").map do |innerclass|
           innerpath = File.join(@build_path, "#{innerclass["refid"]}.xml")
           innerdoc = File.open(innerpath) { |f| Nokogiri::XML(f) }
+          inject_typedefs(innerdoc)
           compounddef = innerdoc.xpath("/doxygen/compounddef")
           Doxygen::Struct.new(compounddef.first)
+        end
+      end
+
+      def inject_typedefs(doc)
+        if doc.root
+          doc.root["nuts-docs-typedefs"] = typedefs.join(",")
         end
       end
     end
