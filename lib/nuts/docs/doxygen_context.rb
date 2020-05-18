@@ -1,11 +1,11 @@
 module Nuts
   module Docs
     class DoxygenContext < AbstractContext
-      def initialize(build_path, group)
+      def initialize(build_path, header)
         super()
 
         @build_path = build_path
-        @group = group
+        @header = header
       end
 
       def select(type)
@@ -16,11 +16,21 @@ module Nuts
 
       def doc
         if @doc.nil?
-          path = File.join(@build_path, "group__#{@group}.xml")
+          compound = index_doc.xpath("/doxygenindex/compound[@kind='file'][name='#{@header}']").first
+          path = File.join(@build_path, "#{compound['refid']}.xml")
           @doc ||= File.open(path) { |f| Nokogiri::XML(f) }
         end
 
         return @doc
+      end
+
+      def index_doc
+        if @index_doc.nil?
+          path = File.join(@build_path, "index.xml")
+          @index_doc ||= File.open(path) { |f| Nokogiri::XML(f) }
+        end
+
+        @index_doc
       end
 
       def select_functions
